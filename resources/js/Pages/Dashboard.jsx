@@ -83,7 +83,7 @@ export default function Dashboard({ auth }) {
         >
             <Head title="Inicio" />
 
-            <div className="py-12">
+            <div className="py-[10vh] items-center">
                 <div className="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
                 {currentQuestionNumber >= '1' && (
@@ -353,7 +353,7 @@ export default function Dashboard({ auth }) {
                         {/* Pregunta 5 */}
                         {currentScreen === 'questions5' && (
                             <div>
-                                <div className="mt-6 mb-6 text-3xl font-semibold text-black flex items-center justify-center">Analicemos ahora que tan bien cumple tu PC los requerimientos de los videojuegos:</div>
+                                <div className="mt-6 mb-6 text-3xl font-semibold text-black flex items-center justify-center">Analicemos ahora que tan bien cumple tu PC <br/> los requerimientos de los videojuegos:</div>
 
                                 <div className="mt-4 ml-6 flex items-center">
                                     <img
