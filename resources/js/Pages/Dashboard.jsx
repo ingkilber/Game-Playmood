@@ -1,7 +1,8 @@
 import PrimaryButton from '@/Components/PrimaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Link, Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
+import OnlineGames from './Games.jsx';
 
 export default function Dashboard({ auth }) {
 
@@ -40,9 +41,6 @@ export default function Dashboard({ auth }) {
     const [isChecked3_7, setIsChecked3_7] = useState(false);
     const [isChecked4_7, setIsChecked4_7] = useState(false);
 
-    const [isChecked1_8, setIsChecked1_8] = useState(false);
-    const [isChecked2_8, setIsChecked2_8] = useState(false);
-
     const handleNext = () => {
         if (currentScreen === 'welcome') {
             setCurrentScreen('questions'); // Cambia a la primera pantalla de preguntas
@@ -73,6 +71,22 @@ export default function Dashboard({ auth }) {
             setCurrentQuestionNumber(null);
         } else {
             // setCurrentScreen('fin_de_preguntas');
+        }
+    };
+
+    const [selectedMood, setSelectedMood] = useState(null); // Estado para almacenar el estado de animo
+
+    const handleGames = () => {
+        // Verifica si se ha seleccionado alguna opción antes de continuar
+        if (selectedMood !== null) {
+            // Almacena selectedMood en localStorage
+            localStorage.setItem('selectedMood', selectedMood);
+
+            // Dirige al usuario a la página de juegos con el valor seleccionado como parte de la URL
+            window.location.href = `/games`;
+        } else {
+            // Muestra un mensaje de advertencia si no se ha seleccionado ninguna opción
+            alert("Por favor, selecciona un estado de ánimo antes de continuar.");
         }
     };
 
@@ -597,8 +611,8 @@ export default function Dashboard({ auth }) {
                                     type="radio"
                                     name="tiempo-jugar"
                                     className="mr-2 border border-gray-500 rounded-full"
-                                    checked={isChecked1_8}
-                                    onChange={() => setIsChecked1_8(!isChecked1_8)}
+                                    checked={selectedMood === 'alegre'}
+                                    onChange={() => setSelectedMood('alegre')}
                                 />
                                 <label htmlFor="check">Alegre</label>
                             </div>
@@ -608,33 +622,12 @@ export default function Dashboard({ auth }) {
                                     type="radio"
                                     name="tiempo-jugar"
                                     className="mr-2 border border-gray-500 rounded-full"
-                                    checked={isChecked2_8}
-                                    onChange={() => setIsChecked2_8(!isChecked2_8)}
+                                    checked={selectedMood === 'triste'}
+                                    onChange={() => setSelectedMood('triste')}
                                 />
                                 <label htmlFor="check">Triste</label>
                             </div>
-{/*                         
-                            <div className="mt-4 ml-6 flex items-center">
-                                <input
-                                    type="radio"
-                                    name="tiempo-jugar"
-                                    className="mr-2 border border-gray-500 rounded-full"
-                                    checked={isChecked3_8}
-                                    onChange={() => setIsChecked3_8(!isChecked3_8)}
-                                />
-                                <label htmlFor="check">Entre 1hr. y 3hr.</label>
-                            </div>
 
-                            <div className="mt-4 ml-6 flex items-center">
-                                <input
-                                    type="radio"
-                                    name="tiempo-jugar"
-                                    className="mr-2 border border-gray-500 rounded-full"
-                                    checked={isChecked3_8}
-                                    onChange={() => setIsChecked3_8(!isChecked3_8)}
-                                />
-                                <label htmlFor="check">Más de 3hr.</label>
-                            </div> */}
                         
                             <nav className="flex flex-col lg:flex-row text-center text-black w-full mt-8">
                                 {/* <button
@@ -667,7 +660,7 @@ export default function Dashboard({ auth }) {
 
                                 <nav className="flex flex-col lg:flex-row text-center text-black w-full mt-8">
                                     <button
-                                        onClick={handleNext}
+                                        onClick={handleGames}
                                         className="w-full bg-[#FFC670] hover:bg-[rgba(237,135,3,0.8)] hover:text-white text-lg font-bold py-2 px-4 rounded-r"
                                     >
                                         Empezar a jugar
