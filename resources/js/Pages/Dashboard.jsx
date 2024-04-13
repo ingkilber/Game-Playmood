@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
 import OnlineGames from './Games.jsx';
+import Swal from 'sweetalert2';
 
 export default function Dashboard({ auth }) {
 
@@ -41,40 +42,101 @@ export default function Dashboard({ auth }) {
     const [isChecked3_7, setIsChecked3_7] = useState(false);
     const [isChecked4_7, setIsChecked4_7] = useState(false);
 
+    const [selectedMood, setSelectedMood] = useState(null); // Estado para almacenar el estado de animo
+
+    // Avanzar a la siguiente pantalla
     const handleNext = () => {
-        if (currentScreen === 'welcome') {
-            setCurrentScreen('questions'); // Cambia a la primera pantalla de preguntas
-            setCurrentQuestionNumber(currentQuestionNumber + 1);
-        } else if (currentScreen === 'questions') {
-            setCurrentScreen('questions2');
-            setCurrentQuestionNumber(currentQuestionNumber + 1);
-        } else if (currentScreen === 'questions2') {
-            setCurrentScreen('questions3');
-            setCurrentQuestionNumber(currentQuestionNumber + 1);
-        } else if (currentScreen === 'questions3') {
-            setCurrentScreen('questions4');
-            setCurrentQuestionNumber(currentQuestionNumber + 1);
-        } else if (currentScreen === 'questions4') {
-            setCurrentScreen('questions5');
-            setCurrentQuestionNumber(currentQuestionNumber + 1);
-        } else if (currentScreen === 'questions5') {
-            setCurrentScreen('questions6');
-            setCurrentQuestionNumber(currentQuestionNumber + 1);
-        } else if (currentScreen === 'questions6') {
-            setCurrentScreen('questions7');
-            setCurrentQuestionNumber(currentQuestionNumber + 1);
-        } else if (currentScreen === 'questions7') {
-            setCurrentScreen('questions8');
-            setCurrentQuestionNumber(currentQuestionNumber + 1);
-        }  else if (currentScreen === 'questions8') {
-            setCurrentScreen('fin_de_preguntas');
-            setCurrentQuestionNumber(null);
+        if (currentScreen === 'questions8') {
+            if (selectedMood) {
+                setCurrentScreen('fin_de_preguntas');
+                setCurrentQuestionNumber(null);
+            } else {
+                // Si no se seleccionó un estado de ánimo, muestra un SweetAlert con un mensaje específico
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Debes seleccionar un estado de ánimo antes de continuar.',
+                    confirmButtonColor: 'rgba(237,135,3,0.8)',
+                });
+            }
         } else {
-            // setCurrentScreen('fin_de_preguntas');
+            switch (currentScreen) {
+                case 'welcome':
+                    setCurrentScreen('questions');
+                    break;
+                case 'questions':
+                    setCurrentScreen('questions2');
+                    break;
+                case 'questions2':
+                    setCurrentScreen('questions3');
+                    break;
+                case 'questions3':
+                    setCurrentScreen('questions4');
+                    break;
+                case 'questions4':
+                    setCurrentScreen('questions5');
+                    break;
+                case 'questions5':
+                    setCurrentScreen('questions6');
+                    break;
+                case 'questions6':
+                    setCurrentScreen('questions7');
+                    break;
+                case 'questions7':
+                    setCurrentScreen('questions8');
+                    break;
+                default:
+                    break;
+            }
+            setCurrentQuestionNumber(currentQuestionNumber + 1);
         }
     };
 
-    const [selectedMood, setSelectedMood] = useState(null); // Estado para almacenar el estado de animo
+    // Regresa a la pantalla anterior
+    const handlePrevious = () => {
+        let previousScreen = '';
+        let previousQuestionNumber = 0;
+    
+        switch (currentScreen) {
+            case 'questions':
+                previousScreen = 'welcome';
+                previousQuestionNumber = currentQuestionNumber - 1;
+                break;
+            case 'questions2':
+                previousScreen = 'questions';
+                previousQuestionNumber = currentQuestionNumber - 1;
+                break;
+            case 'questions3':
+                previousScreen = 'questions2';
+                previousQuestionNumber = currentQuestionNumber - 1;
+                break;
+            case 'questions4':
+                previousScreen = 'questions3';
+                previousQuestionNumber = currentQuestionNumber - 1;
+                break;
+            case 'questions5':
+                previousScreen = 'questions4';
+                previousQuestionNumber = currentQuestionNumber - 1;
+                break;
+            case 'questions6':
+                previousScreen = 'questions5';
+                previousQuestionNumber = currentQuestionNumber - 1;
+                break;
+            case 'questions7':
+                previousScreen = 'questions6';
+                previousQuestionNumber = currentQuestionNumber - 1;
+                break;
+            case 'questions8':
+                previousScreen = 'questions7';
+                previousQuestionNumber = currentQuestionNumber - 1;
+                break;
+            default:
+                break;
+        }
+    
+        setCurrentScreen(previousScreen);
+        setCurrentQuestionNumber(previousQuestionNumber);
+    };
 
     const handleGames = () => {
         // Verifica si se ha seleccionado alguna opción antes de continuar
@@ -100,9 +162,20 @@ export default function Dashboard({ auth }) {
             <div className="py-[10vh] items-center">
                 <div className="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
-                {currentQuestionNumber >= '1' && (
-                    <div className="flex items-center justify-end mt-2 mr-4 mb-2">Pregunta {currentQuestionNumber}-8</div>
-                )}
+                    {currentQuestionNumber >= '1' && (
+                        <div className="flex items-center justify-between mt-2 mr-4 mb-3">
+                            <button onClick={handlePrevious} className="flex items-center bg-[rgba(255,198,112,0.8)] hover:bg-[rgba(237,135,3,0.8)] hover:text-white font-semibold py-2 px-4 rounded-lg shadow-md">
+                                <svg className="fill-current mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M10 18a1 1 0 01-.707-.293l-7-7a1 1 0 010-1.414l7-7a1 1 0 011.414 1.414L4.414 10l6.293 6.293A1 1 0 0110 18z" />
+                                </svg>
+                                Atrás
+                            </button>
+                            <div className="flex items-center mt-4">Pregunta {currentQuestionNumber}-8</div>
+                        </div>
+                    )}
+
+
+
             
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg ">
 
@@ -419,7 +492,7 @@ export default function Dashboard({ auth }) {
                                         type="checkbox"
                                         className="ml-8 border border-gray-500 rounded"
                                         checked={isChecked1_6}
-                                        onChange={() => setIsChecked1_7(!isChecked1_6)}
+                                        onChange={() => setIsChecked1_6(!isChecked1_6)}
                                     />
                                 </div>
 
