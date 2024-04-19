@@ -20,7 +20,7 @@ Route::get('/dashboard', function () {
 
 Route::get('/games', function () {
     return Inertia::render('Games');
-})->middleware(['auth', 'verified'])->name('games');
+})->middleware(['auth'])->name('games');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
